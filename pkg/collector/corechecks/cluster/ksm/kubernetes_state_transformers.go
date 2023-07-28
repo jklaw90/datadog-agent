@@ -29,6 +29,7 @@ type metricTransformerFunc = func(sender.Sender, string, ksmstore.DDMetric, stri
 func defaultMetricTransformers() map[string]metricTransformerFunc {
 	return map[string]metricTransformerFunc{
 		"kube_pod_created":                              podCreationTransformer,
+		"kube_pod_status_scheduled_time":                podScheduledTimeTransformer,
 		"kube_pod_start_time":                           podStartTimeTransformer,
 		"kube_pod_status_phase":                         podPhaseTransformer,
 		"kube_pod_container_status_waiting_reason":      containerWaitingReasonTransformer,
@@ -168,6 +169,11 @@ func nodeCreationTransformer(s sender.Sender, name string, metric ksmstore.DDMet
 // podCreationTransformer generates the pod age metric based on the creation timestamp
 func podCreationTransformer(s sender.Sender, name string, metric ksmstore.DDMetric, hostname string, tags []string, currentTime time.Time) {
 	submitAge(s, ksmMetricPrefix+"pod.age", metric, hostname, tags, currentTime)
+}
+
+// podScheduledTimeTransformer generates the pod age metric based on the creation timestamp
+func podScheduledTimeTransformer(s sender.Sender, name string, metric ksmstore.DDMetric, hostname string, tags []string, currentTime time.Time) {
+	submitAge(s, ksmMetricPrefix+"pod.scheduled_time", metric, hostname, tags, currentTime)
 }
 
 // podStartTimeTransformer generates the pod uptime metric based on the start time timestamp

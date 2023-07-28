@@ -97,6 +97,26 @@ func (f *extendedPodFactory) MetricFamilyGenerators(allowAnnotationsList, allowL
 				return f.customResourceOwnerGenerator(p, resourcelimits)
 			}),
 		),
+		// kube_pod_created
+
+		*generator.NewFamilyGenerator(
+			"kube_pod_created",
+			"The number of requested request resource by a container, including pod owner information.",
+			metric.Gauge,
+			"",
+			wrapPodFunc(func(p *v1.Pod) *metric.Family {
+				return f.customResourceOwnerGenerator(p, resourceRequests)
+			}),
+		),
+		*generator.NewFamilyGenerator(
+			"kube_pod_status_scheduled_time",
+			"The number of requested request resource by a container, including pod owner information.",
+			metric.Gauge,
+			"",
+			wrapPodFunc(func(p *v1.Pod) *metric.Family {
+				return f.customResourceOwnerGenerator(p, resourceRequests)
+			}),
+		),
 	}
 }
 
